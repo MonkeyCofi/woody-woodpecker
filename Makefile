@@ -4,3 +4,6 @@ CFLAGS = -Wall -Wextra -Werror
 
 all:
 	$(CC) $(CFLAGS) main.c -o out
+
+clean:
+	rm -rf *.o
