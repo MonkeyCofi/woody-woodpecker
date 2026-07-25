@@ -214,6 +214,25 @@ Elf64_Shdr *find_section(Elf64_Ehdr *ehdr, const char *name)
 	return NULL;
 }
 
+Elf64_Phdr	*find_last_load_segment(Elf64_Ehdr *ehdr)
+{
+	Elf64_Phdr	*phdrs;
+	Elf64_Half	entries;
+	Elf64_Half	entsize;
+	Elf64_Phdr	*last_segment;
+
+	phdrs = ehdr->e_phoff;
+	entries = ehdr->e_phnum;
+	entsize = ehdr->e_phentsize;
+	last_segment = NULL;
+	for (int i = 0; i < entries; i++)
+	{
+		if (phdrs[i].p_type == PT_LOAD)
+			last_segment = &phdrs[i];
+	}
+	return last_segment;
+}
+
 int main(int ac, char **av)
 {
 	int			file;
