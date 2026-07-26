@@ -266,5 +266,9 @@ int main(int ac, char **av)
 		printf("Found load segment\n");
 	printf("Type of last_load %s\n", p_type_string(last_load->p_type));
 	printf("Address of last load segment %p\n", (void *)last_load->p_vaddr);
+	/*
+		the last load segment will be the segment of code to be encrypted
+		
+	*/
 	return 0;
 }
