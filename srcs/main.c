@@ -153,6 +153,7 @@ const char	*get_sh_type_str(Elf64_Word flag)
 void	parse_phdrs(void *map, Elf64_Ehdr *ehdr)
 {
 	Elf64_Phdr	*phtable;
+	Elf64_Phdr	*curr;
 
 	phtable = map + ehdr->e_phoff;	// the start of the program header table
 	Elf64_Half entsize = ehdr->e_phentsize;
@@ -160,7 +161,7 @@ void	parse_phdrs(void *map, Elf64_Ehdr *ehdr)
 	printf("Each entry is of size %d and there are %d entries\n", entsize, entries);
 	for (int i = 0; i < entries; i++)
 	{
-		Elf64_Phdr *curr = ((Elf64_Phdr *)((char *)phtable + (entsize * i)));
+		curr = ((Elf64_Phdr *)((char *)phtable + (entsize * i)));
 		printf("--------------\n");
 		printf("Entry %d\n", i);
 		printf("program header type %s\n", p_type_string(curr->p_type));
@@ -217,17 +218,17 @@ Elf64_Shdr *find_section(Elf64_Ehdr *ehdr, const char *name)
 Elf64_Phdr	*find_last_load_segment(Elf64_Ehdr *ehdr)
 {
 	Elf64_Phdr	*phdrs;
+	Elf64_Phdr	*curr;
 	Elf64_Half	entries;
-	Elf64_Half	entsize;
 	Elf64_Phdr	*last_segment;
 
-	phdrs = ehdr->e_phoff;
+	phdrs = (Elf64_Phdr *)((char *)ehdr + ehdr->e_phoff);
 	entries = ehdr->e_phnum;
-	entsize = ehdr->e_phentsize;
 	last_segment = NULL;
 	for (int i = 0; i < entries; i++)
 	{
-		if (phdrs[i].p_type == PT_LOAD)
+		curr = ((Elf64_Phdr *)((char *)phdrs + (ehdr->e_phentsize * i)));
+		if (curr->p_type == PT_LOAD)
 			last_segment = &phdrs[i];
 	}
 	return last_segment;
@@ -252,11 +253,18 @@ int main(int ac, char **av)
 	printf("there are %d program header entries each of size %d\n", ehdr->e_phnum, ehdr->e_phentsize);
 	printf("there are %d section header entries each of size %d\n", ehdr->e_shnum, ehdr->e_shentsize);
 	parse_phdrs(file_map, ehdr);
-	parse_shdrs(file_map, ehdr);
+	// parse_shdrs(file_map, ehdr);
 	text = find_section(ehdr, ".text");
 	if (text == NULL)
 		fprintf(stderr, "No .text section\n");
 	else
 		printf(".text section found\n");
+	Elf64_Phdr*	last_load = find_last_load_segment(ehdr);
+	if (last_load == NULL)
+		printf("Couldn't find last load segment\n");
+	else
+		printf("Found load segment\n");
+	printf("Type of last_load %s\n", p_type_string(last_load->p_type));
+	printf("Address of last load segment %p\n", (void *)last_load->p_vaddr);
 	return 0;
 }
