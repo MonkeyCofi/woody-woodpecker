@@ -42,8 +42,10 @@ typedef struct {
     uint16_t      e_shstrndx;
 } ElfN_Ehdr;
 ```
+The variable e_entry contains the entry point of the binary file and should be saved so that it can later be modified. The new entry point of the binary will be the address of the function that will be used to decrypt the encrypted segment.
 
-
+### Encryption
+For the encryption, 
 
 ## Resources
 [Handcrafting x86_64 ELF from specification to bytes](https://medium.com/@dassomnath/handcrafting-x64-elf-from-specification-to-bytes-9986b342eb89)

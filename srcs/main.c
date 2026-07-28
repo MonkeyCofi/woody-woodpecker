@@ -267,7 +267,8 @@ int main(int ac, char **av)
 	printf("Type of last_load %s\n", p_type_string(last_load->p_type));
 	printf("Address of last load segment %p\n", (void *)last_load->p_vaddr);
 	/*
-		the last load segment will be the segment of code to be encrypted
+		the last load segment will be expanded to include the decryption stub
+		
 		
 	*/
 	return 0;
