@@ -1,4 +1,4 @@
-NAME = woody_woodpecker
+NAME = woody_woodpacker
 
 CC = gcc
 
@@ -8,7 +8,7 @@ INC = inc
 
 SRCS_DIR = srcs
 
-SRCS = $(addprefix $(SRCS_DIR)/, parse.c main.c)
+SRCS = $(addprefix $(SRCS_DIR)/, types.c parse.c main.c)
 
 OBJS_DIR = objs
 

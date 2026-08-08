@@ -24,13 +24,15 @@ int main(int ac, char **av)
 	e_elf_info	info;
 
 	if (ac != 2)
-	{
+	{	
 		fprintf(stderr, "Usage: ./out <binary>\n");
 		return 1;
 	}
 	info.fd = open(av[1], O_RDONLY);
 	if (info.fd < 0)
 		fprintf(stderr, "Failed to open binary file\n");
-	valid_elf64(&info);
+	if (valid_elf64(&info) == false)
+		return 1;
+	// after receiving all ELF file information, 
 	return 0;
 }

@@ -28,11 +28,16 @@ typedef struct s_elf_info
 	Elf64_Shdr	*load_segment;
 }	e_elf_info;
 
-bool    valid_elf64(e_elf_info *info);
-void	parse_phdrs(e_elf_info *info);
-void	parse_shdrs(void *map, Elf64_Ehdr *ehdr);
-void    sections_in_segment(e_elf_info *info, Elf64_Phdr *segment);
+bool    	valid_elf64(e_elf_info *info);
+void		parse_phdrs(e_elf_info *info);
+void		parse_shdrs(void *map, Elf64_Ehdr *ehdr);
+void    	sections_in_segment(e_elf_info *info, Elf64_Phdr *segment);
 
 Elf64_Shdr *find_section(Elf64_Ehdr *ehdr, const char *name);
+
+// utilities
+const char	*get_sh_type_str(Elf64_Word flag);
+const char	*p_type_string(Elf64_Word type);
+const char	*p_flag(Elf64_Word flag);
 
 #endif
